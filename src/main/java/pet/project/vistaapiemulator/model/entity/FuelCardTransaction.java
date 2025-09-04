@@ -39,7 +39,7 @@ public class FuelCardTransaction {
     @JoinColumn(name = "station_id")
     private FuelStation station;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "transaction",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<FuelCardTransactionLine> lines;
 
     @ManyToOne(fetch = FetchType.LAZY)
