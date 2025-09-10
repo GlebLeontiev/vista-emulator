@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import pet.project.vistaapiemulator.model.entity.FuelCardTransaction;
 
 public interface FuelCardTransactionRepository extends JpaRepository<FuelCardTransaction, Long>, JpaSpecificationExecutor<FuelCardTransaction> {
+
+    FuelCardTransaction findTopByOrderByRefTransactionIdDesc();
 }

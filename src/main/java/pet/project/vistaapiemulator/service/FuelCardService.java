@@ -2,6 +2,8 @@ package pet.project.vistaapiemulator.service;
 
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,6 @@ import pet.project.vistaapiemulator.model.dto.AssignCardRequest;
 import pet.project.vistaapiemulator.model.entity.FuelCard;
 import pet.project.vistaapiemulator.model.enums.FuelCardStatus;
 import pet.project.vistaapiemulator.repository.FuelCardRepository;
-import pet.project.vistaapiemulator.repository.PurchaseOrderRepository;
 
 import java.util.Random;
 
@@ -19,6 +20,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class FuelCardService {
 
+    private static final Logger log = LoggerFactory.getLogger(FuelCardService.class);
     private final FuelCardRepository repository;
 
     public FuelCard get(Long customerId, Long cardId) {
@@ -54,9 +56,9 @@ public class FuelCardService {
 
         String pin =Integer.toString(new Random().nextInt(9000) + 1000);
         card.setPin(pin);
-        card.setStatus(FuelCardStatus.ACTIVE);
+        card.setStatus(FuelCardStatus.ACTIVE); // TODO это правильно
         repository.save(card);
-
+        log.info("Assigned driver {} to card {}", req.getEmail(), card.getCardNumber());
         return pin;
     }
 
@@ -65,8 +67,11 @@ public class FuelCardService {
         FuelCard card = get(customerId, cardId);
         card.setFullName(null);
         card.setEmail(null);
+        card.setPin(null);
+        card.setStatus(FuelCardStatus.INACTIVE);
 
         repository.save(card);
+        log.info("Unassigned driver from card {}, with id {}", card.getCardNumber(), card.getId());
     }
 
     @Transactional
@@ -75,6 +80,7 @@ public class FuelCardService {
         card.setStatus(FuelCardStatus.INACTIVE);
 
         repository.save(card);
+        log.info("Block card {}, with id {}", card.getCardNumber(), card.getId());
     }
 
     @Transactional
@@ -83,5 +89,6 @@ public class FuelCardService {
         card.setStatus(FuelCardStatus.ACTIVE);
 
         repository.save(card);
+        log.info("Unblock card {}, with id {}", card.getCardNumber(), card.getId());
     }
 }

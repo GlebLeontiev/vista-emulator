@@ -17,4 +17,7 @@ spring:
 pagination:
   default-page: 1
   default-limit: 5
+scheduler:
+  initial-delay: 60000
+  fixed-rate: 600000
 

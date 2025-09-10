@@ -1,6 +1,8 @@
 package pet.project.vistaapiemulator.service;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pet.project.vistaapiemulator.exceptions.NotFoundException;
@@ -16,6 +18,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
+    private static final Logger log = LoggerFactory.getLogger(CustomerService.class);
     private final CustomerRepository repository;
 
     @Transactional
@@ -35,7 +38,9 @@ public class CustomerService {
                 .forecastedRebate(BigDecimal.ZERO)
                 .paymentLink("https://payments.example.com/pay?token=" + UUID.randomUUID())
                 .build();
-        return repository.save(customer);
+        Customer save = repository.save(customer);
+        log.info("Create customer: name - {} ; id - {}", save.getName(), save.getId());
+        return save;
     }
 
     public Customer get(Long id) {
@@ -53,6 +58,7 @@ public class CustomerService {
         if (req.getAgreementLink() != null) customer.setAgreementLink(req.getAgreementLink());
         if (req.getAddress() != null) customer.setAddress(req.getAddress());
         if (req.getContact() != null) customer.setContact(req.getContact());
-        repository.save(customer);
+        Customer save = repository.save(customer);
+        log.info("Update customer: name - {} ; id - {}", save.getName(), save.getId());
     }
 }
