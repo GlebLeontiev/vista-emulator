@@ -1,5 +1,6 @@
 package pet.project.vistaapiemulator.util;
 
+import io.micrometer.common.util.StringUtils;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -34,11 +35,11 @@ public class TestDataGenerator {
     @PostConstruct
     public void initAtomicInteger() {
         try {
-            FuelCardTransaction fuelCardTransaction = transactionRepository.findTopByOrderByRefTransactionIdDesc();
+            String maxRefId = transactionRepository.findMaxRefTransactionId();
 
-            if (fuelCardTransaction != null && fuelCardTransaction.getRefTransactionId() != null) {
-                long maxRefId = Long.parseLong(fuelCardTransaction.getRefTransactionId());
-                atomicInteger.set(maxRefId);
+            if (StringUtils.isNotBlank(maxRefId)) {
+                long refId = Long.parseLong(maxRefId);
+                atomicInteger.set(refId);
                 atomicInteger.incrementAndGet();
             }
         } catch (Exception e) {

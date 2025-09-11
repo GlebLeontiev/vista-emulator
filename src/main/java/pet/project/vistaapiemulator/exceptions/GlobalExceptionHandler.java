@@ -1,5 +1,6 @@
 package pet.project.vistaapiemulator.exceptions;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import pet.project.vistaapiemulator.model.common.ApiError;
 
 @RestControllerAdvice
@@ -51,6 +53,15 @@ public class GlobalExceptionHandler {
         log.warn("ErrorResponseException: {}", e.getMessage(), e);
         return ResponseEntity.status(e.getStatusCode())
                 .body(new ApiError("ERROR", e.getMessage()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiError> handleNoResourceFound(NoResourceFoundException e, HttpServletRequest request) {
+        String path = request.getRequestURL().toString();
+        String method = request.getMethod();
+        log.warn("NoResourceFoundException: Method [{}] Path [{}] is not supported. {}", method, path, e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ApiError("RESOURCE_NOT_FOUND", "The path [" + method + " " + path + "] is not supported"));
     }
 
     @ExceptionHandler(Exception.class)
