@@ -10,7 +10,7 @@ public enum PaymentType {
     DEPOSIT("Deposit"),
     REFUND("Refund"),
     REBATE("Rebate"),
-    ACCOUNT_TOP_UP("Account top-up");
+    ACCOUNT_TOP_UP("Account Top-up");
 
     private final String value;
 
