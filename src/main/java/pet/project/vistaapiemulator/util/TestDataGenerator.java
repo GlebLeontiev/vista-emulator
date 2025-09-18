@@ -47,7 +47,7 @@ public class TestDataGenerator {
         }
     }
 
-    public void generateTestDataForPurchaseOrder(PurchaseOrder order){
+    public void generateTestDataForPurchaseOrder(PurchaseOrder order) {
         Integer cardsQuantity = order.getCardsQuantity();
 
         List<FuelCard> fuelCardList = new ArrayList<>();
@@ -60,7 +60,7 @@ public class TestDataGenerator {
     }
 
     @Transactional
-    public void generateTransactionsByFuelCard(List<FuelCard> fuelCards){
+    public void generateTransactionsByFuelCard(List<FuelCard> fuelCards) {
         if (fuelCards == null || fuelCards.isEmpty()) return;
 
         List<FuelStation> stations = fuelStationRepository.findAll();
@@ -77,7 +77,7 @@ public class TestDataGenerator {
         log.info("generateTransactionsByFuelCard(): generated new transactions, size: {}", transactionsToSave.size());
     }
 
-    private FuelCardTransaction buildTransaction(FuelCard card, FuelStation station){
+    private FuelCardTransaction buildTransaction(FuelCard card, FuelStation station) {
         long now = System.currentTimeMillis();
         long refId = atomicInteger.incrementAndGet();
 
@@ -88,7 +88,7 @@ public class TestDataGenerator {
         BigDecimal taxTotal = BigDecimal.ZERO;
 
         for (int i = 0; i < linesCount; i++) {
-            TransactionLineType type = random.nextBoolean() ? TransactionLineType.FUEL : TransactionLineType.NON_FUEL;
+            TransactionLineType type = TransactionLineType.values()[i];   //random.nextBoolean() ? TransactionLineType.FUEL : TransactionLineType.NON_FUEL;
             TransactionLineCategory category = pickCategory(type);
 
             BigDecimal quantity = randomBigDecimal(5, 180);
@@ -127,9 +127,9 @@ public class TestDataGenerator {
         return tx;
     }
 
-   private BigDecimal randomBigDecimal(double min, double max) {
-       return BigDecimal.valueOf(min + (max - min) * random.nextDouble()).setScale(2, RoundingMode.HALF_UP);
-   }
+    private BigDecimal randomBigDecimal(double min, double max) {
+        return BigDecimal.valueOf(min + (max - min) * random.nextDouble()).setScale(2, RoundingMode.HALF_UP);
+    }
 
     private TransactionLineCategory pickCategory(TransactionLineType type) {
         if (type == TransactionLineType.FUEL) {
@@ -138,7 +138,7 @@ public class TestDataGenerator {
         return TransactionLineCategory.OTHER_PRODUCT;
     }
 
-    public FuelCard generateFuelCardByPO(PurchaseOrder order){
+    public FuelCard generateFuelCardByPO(PurchaseOrder order) {
         return FuelCard.builder()
                 .cardNumber(generateRandomNumber(16))
                 .provider(FuelCardProvider.values()[random.nextInt(FuelCardProvider.values().length)])
