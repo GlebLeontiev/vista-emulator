@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleNoResourceFound(NoResourceFoundException e, HttpServletRequest request) {
         String path = request.getRequestURL().toString();
         String method = request.getMethod();
-        log.warn("NoResourceFoundException: Method [{}] Path [{}] is not supported. {}", method, path, e.getMessage(), e);
+        log.warn("NoResourceFoundException: Method [{}] Path [{}] is not supported. {}", method, path, e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ApiError("RESOURCE_NOT_FOUND", "The path [" + method + " " + path + "] is not supported"));
     }
