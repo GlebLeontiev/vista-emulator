@@ -13,7 +13,16 @@ import pet.project.vistaapiemulator.model.dto.AssignCardRequest;
 import pet.project.vistaapiemulator.model.entity.FuelCard;
 import pet.project.vistaapiemulator.model.enums.FuelCardStatus;
 import pet.project.vistaapiemulator.repository.FuelCardRepository;
+import service.cards.tch.com.types.WSCard;
+import service.cards.tch.com.types.WSCardSummaryReq;
+import service.cards.tch.com.types.WSLocationSearch;
+import service.cards.tch.com.types.WSPolicy;
+import service.cards.tch.com.types.arrays.com.tch.cards.model.WSCardSummaryArray;
+import service.cards.tch.com.types.arrays.com.tch.cards.model.WSLocationArray;
+import service.cards.tch.com.types.arrays.com.tch.cards.model.WSPolicyDescriptionArray;
+import service.cards.tch.com.types.arrays.com.tch.cards.model.WSTransactionArray;
 
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.Random;
 
 @Service
@@ -22,6 +31,49 @@ public class FuelCardService {
 
     private static final Logger log = LoggerFactory.getLogger(FuelCardService.class);
     private final FuelCardRepository repository;
+
+    public String login(String user, String password) {
+        // Заглушка: вернуть null или тестовый токен
+        return null;
+    }
+
+    public void logout(String clientId) {
+        // Заглушка: ничего не делать
+    }
+
+    public WSCard getCard(String clientId, String cardNumber) {
+        // Заглушка: вернуть null
+        return null;
+    }
+
+    public void setCard(String clientId, WSCard card) {
+        // Заглушка: ничего не делать
+    }
+
+    public WSTransactionArray getTransactions(String clientId, XMLGregorianCalendar beg, XMLGregorianCalendar end) {
+        // Заглушка: вернуть null
+        return null;
+    }
+
+    public WSCardSummaryArray getCardSummaries(String clientId, WSCardSummaryReq req) {
+        // Заглушка: вернуть null
+        return null;
+    }
+
+    public WSPolicy getPolicy(String clientId, int policyNumber) {
+        // Заглушка: вернуть null
+        return null;
+    }
+
+    public WSLocationArray searchLocation(String clientId, WSLocationSearch search) {
+        // Заглушка: вернуть null
+        return null;
+    }
+
+    public WSPolicyDescriptionArray getPolicyDescriptions(String clientId) {
+        // Заглушка: вернуть null
+        return null;
+    }
 
     public FuelCard get(Long customerId, Long cardId) {
         FuelCard card = repository.findById(cardId).orElseThrow(() -> new NotFoundException("Fuel card not found"));

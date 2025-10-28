@@ -28,6 +28,9 @@ dependencies {
     implementation 'wsdl4j:wsdl4j'
     jaxb 'org.glassfish.jaxb:jaxb-xjc'
 
+    implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+    runtimeOnly("org.glassfish.jaxb:jaxb-runtime:4.0.5")
+
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
 
@@ -45,7 +48,7 @@ sourceSets {
 
 tasks.register('genJaxb') {
     ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
-    ext.schema = "src/main/resources/wsdl/CardManagementWS (ws.partner.efsllc.com).xml"
+    ext.schema = "src/main/resources/wsdl/CardManagementWS.xml"
 
     outputs.dir sourcesDir
 
